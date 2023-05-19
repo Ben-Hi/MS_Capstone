@@ -3,3 +3,4 @@ models
 research_papers
 sample_model_output_images
 test_visualizations
+__pycache__
