@@ -1,0 +1,13 @@
+CLASSES = {"leader": 0, "nonbranch": 1, "other": 2, "sidebranch": 3, "spur": 4}            # mapping between classes and unique id num
+THING_CLASSES = ["leader", "nonbranch", "other", "sidebranch", "spur"]                     # list of classes for metadata
+THING_COLORS = [(15, 11, 227), (122, 121, 121), (255, 0, 0), (0, 255, 55), (235, 97, 250)] # class colors for visualization
+MODELS_DIR = "/home/hillenb/Desktop/MS_Capstone/Mask_RCNN_Detectron2/models"                # dir to create subdirs in to store model.pth files and tensorboard logs
+CONFIG_DIR = "/home/hillenb/Desktop/MS_Capstone/Mask_RCNN_Detectron2/configs"              # dir to store .yaml config files
+WHOLE_DATASET_NAME = "my_cherry_dataset"                                                   # name of the whole branch dataset
+TRAIN_DATASET_NAME = "branch_train"                                                        # name of the training subset
+TEST_DATASET_NAME = "branch_test"                                                          # name of the testing subset
+DATA_RANGE = ("video_89", "video_184")                                                     # names of the first and last subdirs in the dataset
+TRAINING_RANGE = ("video_89", "video_156")                                                 # names of the first and last subdirs in the training dataset
+TESTING_RANGE = ("video_157", "video_184")                                                 # names of the first and last subdirs in the testing dataset
+NUM_WORKERS = 2                                                                            # 
+TESTING_THRESHOLD = 0.7                                                                    # IoU threshold for performance evaluation

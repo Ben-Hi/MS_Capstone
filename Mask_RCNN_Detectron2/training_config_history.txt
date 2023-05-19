@@ -1,0 +1,44 @@
+################### 05/08/2023 - 1.5 hour test ###################
+++++PARAMS++++
+
+    Training on the entire cherry branch dataset
+    cfg.DATASETS.TRAIN = ("my_cherry_dataset",)
+    cfg.DATASETS.TEST = ()
+    cfg.DATALOADER.NUM_WORKERS = 2
+    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
+    cfg.SOLVER.IMS_PER_BATCH = 2 # batch size
+    cfg.SOLVER.BASE_LR = 0.001
+    cfg.SOLVER.MAX_ITER = 15000
+    cfg.SOLVER.STEPS = [] # No learning rate decay
+    cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128 # default = 512
+    cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(CLASSES.keys())
+    cfg.OUTPUT_DIR = MY_OUTPUT_DIR
+
+    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")  # path to the model we just trained
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7   # set a custom testing threshold
+    predictor = DefaultPredictor(cfg)
+
+
+++++RESULTS++++
+    Evaluation results for bbox: 
+    |   AP   |  AP50  |  AP75  |  APs   |  APm   |  APl   |
+    |:------:|:------:|:------:|:------:|:------:|:------:|
+    | 79.306 | 96.392 | 93.322 | 75.814 | 82.333 | 77.247 |
+
+    Per-category bbox AP: 
+    | category   | AP     | category   | AP     | category   | AP     |
+    |:-----------|:-------|:-----------|:-------|:-----------|:-------|
+    | leader     | 87.945 | nonbranch  | 77.350 | other      | 71.792 |
+    | sidebranch | 84.245 | spur       | 75.197 |            |        |
+
+
+    Evaluation results for segm: 
+    |   AP   |  AP50  |  AP75  |  APs   |  APm   |  APl   |
+    |:------:|:------:|:------:|:------:|:------:|:------:|
+    | 45.433 | 85.725 | 43.203 | 41.103 | 40.606 | 65.532 |
+
+    Per-category segm AP: 
+    | category   | AP     | category   | AP     | category   | AP     |
+    |:-----------|:-------|:-----------|:-------|:-----------|:-------|
+    | leader     | 52.820 | nonbranch  | 34.235 | other      | 43.959 |
+    | sidebranch | 39.316 | spur       | 56.833 |            |        |
