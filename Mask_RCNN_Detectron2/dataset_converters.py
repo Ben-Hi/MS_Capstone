@@ -5,6 +5,7 @@ import random
 import cv2
 from detectron2.structures import BoxMode
 from detectron2.utils.visualizer import Visualizer
+import settings
 
 CLASSES = {"leader": 0, "nonbranch": 1, "other": 2, "sidebranch": 3, "spur": 4}
 TRAINING_RANGE = ("video_89", "video_156")
@@ -45,7 +46,7 @@ def get_branch_test_dicts():
     Returns:
         List(dict): list of image data where each dictionary corresponds to one image in the test dataset
     """
-    DATA_DIR = "/home/hillenb/Desktop/MS_Capstone/data/UFORozaVideos"
+    DATA_DIR = settings.DATA_DIR
     data_range = TESTING_RANGE
     # sort the subdirectories of videos and get the range of data to load
     subdirs_list = os.listdir(DATA_DIR)
@@ -92,7 +93,7 @@ def get_branch_train_dicts():
     Returns:
         List(dict): list of image data where each dictionary corresponds to one image in the training dataset
     """
-    DATA_DIR = "/home/hillenb/Desktop/MS_Capstone/data/UFORozaVideos"
+    DATA_DIR = settings.DATA_DIR
     data_range = TRAINING_RANGE
     # sort the subdirectories of videos and get the range of data to load
     subdirs_list = os.listdir(DATA_DIR)
@@ -139,7 +140,7 @@ def get_branch_dicts():
     Returns:
         List(dict): list of image data where each dictionary corresponds to one image in the dataset
     """
-    DATA_DIR = "/home/hillenb/Desktop/MS_Capstone/data/UFORozaVideos"
+    DATA_DIR = settings.DATA_DIR
     data_range = (TRAINING_RANGE[0], TESTING_RANGE[1])
     # sort the subdirectories of videos and get the range of data to load
     subdirs_list = os.listdir(DATA_DIR)
