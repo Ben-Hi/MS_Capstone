@@ -25,6 +25,7 @@ from train_net import Trainer
 if __name__ == "__main__":
     print("This module overfits a pretrained Mask2Former net on the entire branch dataset.")
     
+    # Shapely outputs warnings about invalid value in intersection because of image size at 640
     try:
         from shapely.errors import ShapelyDeprecationWarning
         import warnings
@@ -35,10 +36,11 @@ if __name__ == "__main__":
     
     output_dir = os.path.join(m2f_settings.MODELS_DIR, "overfit_testing")
 
-    # load the metadata and 
+    # register the entire branch dataset to detectron2
     branch_metadata = m2f_utils.register_dataset(m2f_settings.WHOLE_DATASET_NAME, get_branch_dicts)
     data_dicts = get_branch_dicts()
 
+    # setup the config for Mask2Former with a Resnet 50 backbone
     cfg = get_cfg()
     add_deeplab_config(cfg)
     add_maskformer2_config(cfg)
@@ -46,35 +48,34 @@ if __name__ == "__main__":
     cfg.MODEL.WEIGHTS = 'https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_R50_bs16_50ep/model_final_3c8ec9.pkl'
     cfg.MODEL.MASK_FORMER.TEST.INSTANCE_ON = True
     cfg.MODEL.SEM_SEG_HEAD.NUM_CLASSES = len(m2f_settings.THING_CLASSES)
-
     cfg.DATASETS.TRAIN = (m2f_settings.WHOLE_DATASET_NAME,)
     cfg.DATASETS.TEST = ()
     cfg.DATALOADER.NUM_WORKERS = m2f_settings.NUM_WORKERS
     cfg.INPUT.IMAGE_SIZE = m2f_settings.IMAGE_SIZE
     cfg.SOLVER.IMS_PER_BATCH = 1 # batch size
     cfg.SOLVER.BASE_LR = 0.001
-    cfg.SOLVER.MAX_ITER = 5 # 72000 on an Nvidia RTX 2060 took approximately 8 hours to complete
+    cfg.SOLVER.MAX_ITER += 500 # 72000 on an Nvidia RTX 2060 took approximately 8 hours to complete
     cfg.SOLVER.STEPS = [] # No learning rate decay
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128 # default = 512
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(m2f_settings.THING_CLASSES)
     cfg.OUTPUT_DIR = output_dir
+    m2f_utils.save_config(cfg, "overfit_testing.yaml")
 
+    # verify the output directory and begin training
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = Trainer(cfg)
-    trainer.resume_or_load(resume=False)
+    trainer.resume_or_load(resume=True)
     trainer.train()
 
+    # setup config file for evaluation
     cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")  # path to the model we just trained
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7   # set a custom testing threshold
     predictor = DefaultPredictor(cfg)
 
-    #data_dicts = get_branch_dicts(DATA_RANGE)
-    #show_random_predictions(data_dicts, predictor, branch_metadata)
-
+    # evaluate the overfit model on the entire dataset
     evaluator = COCOEvaluator(m2f_settings.WHOLE_DATASET_NAME, output_dir=cfg.OUTPUT_DIR)
     val_loader = build_detection_test_loader(cfg, m2f_settings.WHOLE_DATASET_NAME)
     print(inference_on_dataset(predictor.model, val_loader, evaluator))
-    m2f_utils.save_config(cfg, "overfit_testing.yaml")
     
     #predictor = DefaultPredictor(cfg)
     #
