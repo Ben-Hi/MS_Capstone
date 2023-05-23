@@ -1,5 +1,5 @@
 import os, sys
-sys.path.append("/home/hillenb/Desktop/MS_Capstone/Mask_RCNN_Detectron2")
+sys.path.append("/home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2")
 from detectron2.engine import DefaultPredictor
 from detectron2.data import build_detection_test_loader
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset

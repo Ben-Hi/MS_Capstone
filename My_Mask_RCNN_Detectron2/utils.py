@@ -1,5 +1,5 @@
 import os, json, cv2, random, sys
-sys.path.append("/home/hillenb/Desktop/MS_Capstone/Mask_RCNN_Detectron2")
+sys.path.append("/home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2")
 import numpy as np
 import torch
 import detectron2
