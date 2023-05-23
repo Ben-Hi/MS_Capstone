@@ -2,7 +2,7 @@ import os, sys, random
 sys.path.append("/home/hillenb/Desktop/MS_Capstone/My_M2Former_Detectron2")
 sys.path.append("/home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2")
 sys.path.append("/home/hillenb/Desktop/MS_Capstone/Mask2Former")
-import m2f_settings, utils
+import m2f_settings, m2f_utils
 from dataset_converters import get_branch_dicts
 import detectron2
 from detectron2.utils.logger import setup_logger
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     output_dir = os.path.join(m2f_settings.MODELS_DIR, "overfit_testing")
 
     # load the metadata and 
-    branch_metadata = utils.register_dataset(m2f_settings.WHOLE_DATASET_NAME, get_branch_dicts)
+    branch_metadata = m2f_utils.register_dataset(m2f_settings.WHOLE_DATASET_NAME, get_branch_dicts)
     data_dicts = get_branch_dicts()
 
     cfg = get_cfg()
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     cfg.INPUT.IMAGE_SIZE = m2f_settings.IMAGE_SIZE
     cfg.SOLVER.IMS_PER_BATCH = 1 # batch size
     cfg.SOLVER.BASE_LR = 0.001
-    cfg.SOLVER.MAX_ITER = 1000 # 72000 on an Nvidia RTX 2060 took approximately 8 hours to complete
+    cfg.SOLVER.MAX_ITER = 5 # 72000 on an Nvidia RTX 2060 took approximately 8 hours to complete
     cfg.SOLVER.STEPS = [] # No learning rate decay
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128 # default = 512
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(m2f_settings.THING_CLASSES)
@@ -74,7 +74,8 @@ if __name__ == "__main__":
     evaluator = COCOEvaluator(m2f_settings.WHOLE_DATASET_NAME, output_dir=cfg.OUTPUT_DIR)
     val_loader = build_detection_test_loader(cfg, m2f_settings.WHOLE_DATASET_NAME)
     print(inference_on_dataset(predictor.model, val_loader, evaluator))
-
+    m2f_utils.save_config(cfg, "overfit_testing.yaml")
+    
     #predictor = DefaultPredictor(cfg)
     #
     #d = random.sample(data_dicts, 1)[0]
