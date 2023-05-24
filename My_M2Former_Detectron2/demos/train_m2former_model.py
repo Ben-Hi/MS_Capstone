@@ -1,4 +1,4 @@
-import os, sys, random
+import os, sys
 sys.path.append("/home/hillenb/Desktop/MS_Capstone/My_M2Former_Detectron2")
 sys.path.append("/home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2")
 sys.path.append("/home/hillenb/Desktop/MS_Capstone/Mask2Former")
@@ -48,23 +48,24 @@ if __name__ == "__main__":
     cfg.MODEL.WEIGHTS = 'https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_R50_bs16_50ep/model_final_3c8ec9.pkl'
     cfg.MODEL.MASK_FORMER.TEST.INSTANCE_ON = True
     cfg.MODEL.SEM_SEG_HEAD.NUM_CLASSES = len(m2f_settings.THING_CLASSES)
+    cfg.MODEL.RETINANET.NUM_CLASSES = len(m2f_settings.THING_CLASSES)
     cfg.DATASETS.TRAIN = (m2f_settings.WHOLE_DATASET_NAME,)
     cfg.DATASETS.TEST = ()
     cfg.DATALOADER.NUM_WORKERS = m2f_settings.NUM_WORKERS
-    cfg.INPUT.IMAGE_SIZE = m2f_settings.IMAGE_SIZE
+    #cfg.INPUT.IMAGE_SIZE = m2f_settings.IMAGE_SIZE
     cfg.SOLVER.IMS_PER_BATCH = 1 # batch size
     cfg.SOLVER.BASE_LR = 0.001
-    cfg.SOLVER.MAX_ITER += 500 # 72000 on an Nvidia RTX 2060 took approximately 8 hours to complete
+    cfg.SOLVER.MAX_ITER = 500 # 72000 on an Nvidia RTX 2060 took approximately 8 hours to complete
     cfg.SOLVER.STEPS = [] # No learning rate decay
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128 # default = 512
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(m2f_settings.THING_CLASSES)
     cfg.OUTPUT_DIR = output_dir
-    m2f_utils.save_config(cfg, "overfit_testing.yaml")
+    #m2f_utils.save_config(cfg, "overfit_testing.yaml")
 
     # verify the output directory and begin training
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = Trainer(cfg)
-    trainer.resume_or_load(resume=True)
+    trainer.resume_or_load(resume=False)
     trainer.train()
 
     # setup config file for evaluation
