@@ -1,8 +1,8 @@
 CLASSES = {"leader": 0, "nonbranch": 1, "other": 2, "sidebranch": 3, "spur": 4}            # mapping between classes and unique id num
 THING_CLASSES = ["leader", "nonbranch", "other", "sidebranch", "spur"]                     # list of classes for metadata
 THING_COLORS = [(15, 11, 227), (122, 121, 121), (255, 0, 0), (0, 255, 55), (235, 97, 250)] # class colors for visualization
-MODELS_DIR = "/home/hillenb/Desktop/MS_Capstone/Mask_RCNN_Detectron2/models"                # dir to create subdirs in to store model.pth files and tensorboard logs
-CONFIG_DIR = "/home/hillenb/Desktop/MS_Capstone/Mask_RCNN_Detectron2/configs"              # dir to store .yaml config files
+MODELS_DIR = "/home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2/models"                # dir to create subdirs in to store model.pth files and tensorboard logs
+CONFIG_DIR = "/home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2/configs"              # dir to store .yaml config files
 DATA_DIR = "/home/hillenb/Desktop/MS_Capstone/datasets/original_box_data/UFORozaVideos"    # dir where data is stored
 WHOLE_DATASET_NAME = "my_cherry_dataset"                                                   # name of the whole branch dataset
 TRAIN_DATASET_NAME = "branch_train"                                                        # name of the training subset
