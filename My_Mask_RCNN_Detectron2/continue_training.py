@@ -50,5 +50,4 @@ if __name__ == "__main__":
     evaluator = COCOEvaluator(settings.TEST_DATASET_NAME, output_dir=cfg.OUTPUT_DIR)
     val_loader = build_detection_test_loader(cfg, settings.TEST_DATASET_NAME)
     print(inference_on_dataset(predictor.model, val_loader, evaluator))
-    print(cfg.SOLVER.BASE_LR)
     utils.save_config(cfg, os.path.join(settings.CONFIG_DIR, config_save_name))
