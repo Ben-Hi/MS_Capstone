@@ -98,7 +98,7 @@ MODEL:
     - false
     - false
     - false
-    DEPTH: 50
+    DEPTH: 101
     NORM: FrozenBN
     NUM_GROUPS: 1
     OUT_FEATURES:
@@ -275,8 +275,8 @@ MODEL:
     NAME: SemSegFPNHead
     NORM: GN
     NUM_CLASSES: 54
-  WEIGHTS: /home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2/models/pretrained_fpn_50/model_final.pth
-OUTPUT_DIR: /home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2/models/pretrained_fpn_50
+  WEIGHTS: /home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2/models/pre_r101_fpn/model_final.pth
+OUTPUT_DIR: /home/hillenb/Desktop/MS_Capstone/My_Mask_RCNN_Detectron2/models/pre_r101_fpn
 SEED: -1
 SOLVER:
   AMP:
@@ -293,7 +293,7 @@ SOLVER:
   GAMMA: 0.1
   IMS_PER_BATCH: 2
   LR_SCHEDULER_NAME: WarmupMultiStepLR
-  MAX_ITER: 80550
+  MAX_ITER: 70000
   MOMENTUM: 0.9
   NESTEROV: false
   NUM_DECAYS: 3
