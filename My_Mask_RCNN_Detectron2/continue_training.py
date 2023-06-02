@@ -35,18 +35,21 @@ if __name__ == "__main__":
     # setup the detectron2 config
     _, cfg = utils.load_model(config_path, os.path.join(checkpoint_dir, "model_final.pth"))
     cfg.OUTPUT_DIR = checkpoint_dir
-    cfg.SOLVER.MAX_ITER += additional_iters
-
-    trainer = DefaultTrainer(cfg)
-    trainer.resume_or_load(resume=True)
-    trainer.train()
-
+    
+    # train for additional iterations specified by user
+    if additional_iters > 0:
+        cfg.SOLVER.MAX_ITER += additional_iters
+        trainer = DefaultTrainer(cfg)
+        trainer.resume_or_load(resume=True)
+        trainer.train()
+        
     # Inference should use the config with parameters that are used in training
     # cfg now already contains everything we've set previously. We changed it a little bit for inference:
     cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")  # path to the model we just trained
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7   # set a custom testing threshold
     predictor = DefaultPredictor(cfg)
 
+    # evaluate model using coco evaluator and save the new config
     evaluator = COCOEvaluator(settings.TEST_DATASET_NAME, output_dir=cfg.OUTPUT_DIR)
     val_loader = build_detection_test_loader(cfg, settings.TEST_DATASET_NAME)
     print(inference_on_dataset(predictor.model, val_loader, evaluator))
