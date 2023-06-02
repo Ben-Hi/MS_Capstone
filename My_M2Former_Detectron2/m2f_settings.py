@@ -13,3 +13,12 @@ TESTING_RANGE = ("video_157", "video_184")                                      
 NUM_WORKERS = 1                                                                            # 
 TESTING_THRESHOLD = 0.7                                                                    # IoU threshold for performance evaluation
 IMAGE_SIZE = 640
+
+# urls of all pretrained m2former models. my machine can handle swin-t and smaller.
+PRETR_MODEL_URLS = {"r50": "https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_R50_bs16_50ep/model_final_3c8ec9.pkl",
+                   "r101": "https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_R101_bs16_50ep/model_final_eba159.pkl",
+                   "swin_t": "https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_swin_tiny_bs16_50ep/model_final_86143f.pkl",
+                   "swin_s": "https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_swin_small_bs16_50ep/model_final_1e7f22.pkl",
+                   "swin_b": "https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_swin_base_384_bs16_50ep/model_final_f6e0f6.pkl",
+                   "swin_b(in_21k)": "https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_swin_base_IN21k_384_bs16_50ep/model_final_83d103.pkl",
+                   "swin_l(in_21k)": "https://dl.fbaipublicfiles.com/maskformer/mask2former/coco/instance/maskformer2_swin_large_IN21k_384_bs16_100ep/model_final_e5f453.pkl"}
