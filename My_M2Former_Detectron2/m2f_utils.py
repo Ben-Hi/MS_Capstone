@@ -32,6 +32,7 @@ def register_dataset(dataset_name, func):
     DatasetCatalog.register(dataset_name, func)
     MetadataCatalog.get(dataset_name).set(thing_classes=m2f_settings.THING_CLASSES)
     MetadataCatalog.get(dataset_name).set(thing_colors=m2f_settings.THING_COLORS)
+    MetadataCatalog.get(dataset_name).set(evaluator_type=COCOEvaluator)
     metadata = MetadataCatalog.get(dataset_name)
 
     return metadata
