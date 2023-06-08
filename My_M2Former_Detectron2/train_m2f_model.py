@@ -85,14 +85,14 @@ if __name__ == "__main__":
     cfg.INPUT.IMAGE_SIZE = m2f_settings.IMAGE_SIZE
     cfg.SOLVER.IMS_PER_BATCH = 2 # batch size
     cfg.SOLVER.BASE_LR = 0.0001
-    cfg.SOLVER.MAX_ITER = 100 # 72000 on an Nvidia RTX 2060 took approximately 8 hours to complete
+    cfg.SOLVER.MAX_ITER = num_train_iters # 72000 on an Nvidia RTX 2060 took approximately 8 hours to complete
     cfg.SOLVER.STEPS = [] # No learning rate decay
     cfg.OUTPUT_DIR = output_path
     
     # verify the output directory and begin training
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = Trainer(cfg)
-    trainer.resume_or_load(resume=False)
+    trainer.resume_or_load(resume=True)
     trainer.train()
     
     # setup config file for evaluation
