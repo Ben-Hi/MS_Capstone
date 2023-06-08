@@ -103,3 +103,29 @@ def vis_random_model_vs_data(predictor, data_dicts, metadata, num_to_vis=1):
         cv2.imshow("predicted: " + d["file_name"], pred_out.get_image()[:, :, ::-1])
         cv2.imshow("true: " + d["file_name"], true_out.get_image()[:, :, ::-1])
         cv2.waitKey(0)
+        
+        
+def save_vis_from_model(predictor, data_dicts, metadata, save_path):
+    """Saves the visualizations of a predictor on all images from a dataset.
+
+    Args:
+        predictor (): detectron2 model which outputs list[dict] when given an image. See https://detectron2.readthedocs.io/en/latest/tutorials/models.html#model-output-format 
+        data_dicts (list[dict]): detectron2 standard format list of data where each dict corresponds to one image.
+        metadata (Metadata): detectron2 metadata object for use in visualizing images in the dataset.
+        save_path (str): absolute path to dir to save images under.
+    """
+    os.makedirs(save_path, exist_ok=True)
+    for d in data_dicts:
+        img = cv2.imread(d["file_name"])
+        full_save_path = os.path.join(save_path, "pred_" + str(d["image_id"]) + ".png")
+        outputs = predictor(img)
+
+        v_pred = Visualizer(img[:, :, ::-1],
+                       metadata=metadata, 
+                       scale=1, 
+                       instance_mode=ColorMode.IMAGE_BW   # remove the colors of unsegmented pixels. This option is only available for segmentation models
+        )
+
+        pred_out = v_pred.draw_instance_predictions(outputs["instances"].to("cpu"))
+        img_to_save = pred_out.get_image()[:, :, ::-1]
+        cv2.imwrite(full_save_path, img_to_save)
